@@ -72,6 +72,7 @@ public:
 class Factory
 {
 public:
+    virtual ~Factory(){};
     virtual Show *CreateShow() const = 0;
     virtual Cloth *CreateCloth() const = 0;
 };
@@ -80,6 +81,7 @@ public:
 class FashionFactory : public Factory
 {
 public:
+
     Show *CreateShow() const override
     {
         return new FashionShow();

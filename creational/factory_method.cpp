@@ -29,15 +29,15 @@ public:
     }
 };
 
-//抽象工厂类
-class FoodFactory
+//创造者
+class Creator
 {
 public:
-    virtual ~FoodFactory() {}
-    virtual Food *prepare() const = 0;
+    virtual ~Creator() {}
+    virtual Food *FactoryMethod() const = 0;
     std::string MakeFood() const
     {
-        Food *food = this->prepare();
+        Food *food = this->FactoryMethod();
         std::string result = "完成" + food->FoodName();
         delete food;
         return result;
@@ -45,9 +45,10 @@ public:
 };
 
 //具体的面包工厂
-class BreadFactory : public FoodFactory
+class BreadCreator : public Creator
 {
-    Food *prepare() const override
+public:
+    Food *FactoryMethod() const override
     {
         std::cout << "制作面包的流程......" << std::endl;
         return new Bread();
@@ -55,35 +56,35 @@ class BreadFactory : public FoodFactory
 };
 
 //具体的馒头工厂
-class MantouFactory : public FoodFactory
+class MantouCreator : public Creator
 {
-    Food *prepare() const override
+public:
+    Food *FactoryMethod() const override
     {
         std::cout << "制作馒头的流程......" << std::endl;
         return new Mantou();
     }
 };
 
-void FoodClient(const FoodFactory &factory)
+void ClientCode(const Creator &factory)
 {
     std::cout << factory.MakeFood() << std::endl;
 }
 
 int main()
 {
-    FoodFactory *factory = nullptr;
+    Creator *c = nullptr;
 
     std::cout << "面包工厂:" << std::endl;
-    factory = new BreadFactory();
-    FoodClient(*factory);
+    c = new BreadCreator();
+    ClientCode(*c);
     std::cout << std::endl;
-    delete factory;
+    delete c;
 
     std::cout << "馒头工厂:" << std::endl;
-    factory = new MantouFactory();
-    FoodClient(*factory);
+    c = new MantouCreator();
+    ClientCode(*c);
     std::cout << std::endl;
-    delete factory;
-
+    delete c;
     return 0;
 }
